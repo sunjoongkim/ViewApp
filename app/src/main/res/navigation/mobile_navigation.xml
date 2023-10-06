@@ -22,4 +22,10 @@
         android:name="com.practice.viewapp.ui.area3.FragmentArea3"
         android:label="@string/menu_area_3"
         tools:layout="@layout/fragment_area_3" />
+
+    <fragment
+        android:id="@+id/nav_area_4"
+        android:name="com.practice.viewapp.ui.area4.FragmentArea4"
+        android:label="@string/menu_area_4"
+        tools:layout="@layout/fragment_area_4" />
 </navigation>

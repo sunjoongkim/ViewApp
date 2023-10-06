@@ -1,43 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.area3.FragmentArea3">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp">
+    <!-- Year EditText -->
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="200dp"
-            android:layout_height="70dp"
-            android:text="Button 1" />
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Year : "/>
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="20dp"/>
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="200dp"
-            android:layout_height="70dp"
-            android:text="Button 2" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="20dp"/>
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="200dp"
-            android:layout_height="70dp"
-            android:text="Button 3" />
-
+        <EditText
+            android:id="@+id/editYear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:hint="Enter Year"/>
     </LinearLayout>
 
-</FrameLayout>
+    <!-- Locale EditText -->
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="Locale : "/>
+
+        <EditText
+            android:id="@+id/editLocale"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:hint="Enter Locale"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/okButton"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:text="확인" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="100dp"/>
+
+    <!-- Horizontal RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/horizontalRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+</LinearLayout>
