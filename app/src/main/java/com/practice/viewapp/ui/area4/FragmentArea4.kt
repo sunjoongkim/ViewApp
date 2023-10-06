@@ -44,6 +44,7 @@ class FragmentArea4 : Fragment() {
         _binding = FragmentArea4Binding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // 확인 버튼 누르면 사용자가 입력한 year, locale 를 사용해 api 호출
         binding.okButton.setOnClickListener {
             restApiService.getHolidays(binding.editYear.text.toString(), binding.editLocale.text.toString())
                 .enqueue(object: Callback<List<Holiday>> {
@@ -59,6 +60,7 @@ class FragmentArea4 : Fragment() {
                         response.body()?.let{ holidayList ->
                             Log.d("OK", it.toString())
 
+                            // 성공적으로 api 호출이 완료되면 holiday list를 RecyclerView 에 넣어서 보여준다.
                             binding.horizontalRecyclerView.adapter = MyAdapter(holidayList)
 
                         } ?: run {
@@ -78,13 +80,6 @@ class FragmentArea4 : Fragment() {
         }
 
         return root
-    }
-
-    // 하단 알림창 띄우는 함수
-    private fun showBottomSheet(buttonText: String) {
-        val bottomSheetFragment = BottomSheetView()
-        bottomSheetFragment.buttonText = buttonText
-        bottomSheetFragment.show(requireFragmentManager(), bottomSheetFragment.tag)
     }
 
     override fun onDestroyView() {
