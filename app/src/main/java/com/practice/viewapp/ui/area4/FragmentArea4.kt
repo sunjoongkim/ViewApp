@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.practice.viewapp.R
@@ -28,6 +29,7 @@ class FragmentArea4 : Fragment() {
 
     private val binding get() = _binding!!
 
+    // restapi 라이브러리 retrofit2 초기화
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://date.nager.at/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -53,6 +55,7 @@ class FragmentArea4 : Fragment() {
                         response: Response<List<Holiday>>
                     ) {
                         if(response.isSuccessful.not()){
+                            // 아무것도 가져올 수 없는 경우 리스트 초기화
                             binding.horizontalRecyclerView.adapter = null
                             return
                         }
@@ -88,6 +91,7 @@ class FragmentArea4 : Fragment() {
     }
 
 
+    // 리스트 Adapter
     private class MyAdapter(private val dataList: List<Holiday>) :
         RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
@@ -103,6 +107,7 @@ class FragmentArea4 : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            // 리스트 position 에 해당하는 data의 localName, name 을 textView에 넣는다.
             val data = dataList[position]
             holder.textViewLocalName.text = data.localName
             holder.textViewName.text = data.name
