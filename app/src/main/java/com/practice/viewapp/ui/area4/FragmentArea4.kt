@@ -142,11 +142,13 @@ class FragmentArea4 : Fragment() {
             val data = dataList[position]
 
             holder.textViewLocalName.text = data.localName
+            // 박스 클릭시 detail view진입하며 Holiday data를 넘김
             holder.textViewLocalName.setOnClickListener {
                 showDetailView(data)
             }
 
             holder.textViewName.text = data.name
+            // name 클릭시 하단 팝업 생성
             holder.textViewName.setOnClickListener {
                 showBottomSheet(data.name)
             }
