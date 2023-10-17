@@ -1,6 +1,5 @@
 package com.practice.viewapp.ui.area4
 
-import BottomSheetView
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,23 +8,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.practice.viewapp.R
 import com.practice.viewapp.data.Holiday
 import com.practice.viewapp.databinding.FragmentArea4Binding
 import com.practice.viewapp.service.RestApiService
+import com.practice.viewapp.ui.common.BottomSheetView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-// 영역 3 에 대한 화면
+// 영역 4 에 대한 화면
 class FragmentArea4 : Fragment() {
 
     private var _binding: FragmentArea4Binding? = null
+    private var detailView: DetailView? = null
 
     private val binding get() = _binding!!
 
@@ -37,6 +38,18 @@ class FragmentArea4 : Fragment() {
 
     private val restApiService = retrofit.create(RestApiService::class.java)
 
+    // back버튼 누를때 detail view 동작
+    private val backCallback = object: OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (detailView?.isVisible() == true) {
+                detailView?.visible(false)
+            } else {
+                isEnabled = false
+                requireActivity().onBackPressed()
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,6 +58,9 @@ class FragmentArea4 : Fragment() {
 
         _binding = FragmentArea4Binding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        // detail view 선언
+        detailView = DetailView(binding.detailView)
 
         // 확인 버튼 누르면 사용자가 입력한 year, locale 를 사용해 api 호출
         binding.okButton.setOnClickListener {
@@ -64,7 +80,7 @@ class FragmentArea4 : Fragment() {
                             Log.d("OK", it.toString())
 
                             // 성공적으로 api 호출이 완료되면 holiday list를 RecyclerView 에 넣어서 보여준다.
-                            binding.horizontalRecyclerView.adapter = MyAdapter(holidayList)
+                            binding.horizontalRecyclerView.adapter = MyAdapter(holidayList, this@FragmentArea4::showDetailView, this@FragmentArea4::showBottomSheet)
 
                         } ?: run {
                             Log.d("NG", "body is null")
@@ -82,8 +98,23 @@ class FragmentArea4 : Fragment() {
             imm?.hideSoftInputFromWindow(it.windowToken, 0)
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backCallback)
+
         return root
     }
+
+    // Detail view 진입 함수
+    internal fun showDetailView(info: Holiday) {
+        detailView?.visible(true, info)
+    }
+
+    // 하단 알림창 띄우는 함수
+    internal fun showBottomSheet(buttonText: String) {
+        val bottomSheetFragment = BottomSheetView()
+        bottomSheetFragment.buttonText = buttonText
+        bottomSheetFragment.show(requireFragmentManager(), bottomSheetFragment.tag)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -92,7 +123,7 @@ class FragmentArea4 : Fragment() {
 
 
     // 리스트 Adapter
-    private class MyAdapter(private val dataList: List<Holiday>) :
+    private class MyAdapter(private val dataList: List<Holiday>, private val showDetailView: (Holiday) -> Unit, private val showBottomSheet: (String) -> Unit) :
         RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -109,8 +140,16 @@ class FragmentArea4 : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             // 리스트 position 에 해당하는 data의 localName, name 을 textView에 넣는다.
             val data = dataList[position]
+
             holder.textViewLocalName.text = data.localName
+            holder.textViewLocalName.setOnClickListener {
+                showDetailView(data)
+            }
+
             holder.textViewName.text = data.name
+            holder.textViewName.setOnClickListener {
+                showBottomSheet(data.name)
+            }
         }
 
         override fun getItemCount() = dataList.size

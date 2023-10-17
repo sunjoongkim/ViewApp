@@ -11,4 +11,5 @@ interface RestApiService {
         @Path("year") year: String,
         @Path("locale") locale: String
     ): Call<List<Holiday>>
+
 }
