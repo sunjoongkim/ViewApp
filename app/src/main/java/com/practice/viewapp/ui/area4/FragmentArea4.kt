@@ -59,7 +59,7 @@ class FragmentArea4 : Fragment() {
         _binding = FragmentArea4Binding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        // detail view 선언
+        // detail view 선언 (view binding 과 showBottomSheet 함수를 넘김)
         detailView = DetailView(binding.detailView, this::showBottomSheet)
 
         // 확인 버튼 누르면 사용자가 입력한 year, locale 를 사용해 api 호출

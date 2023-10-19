@@ -65,7 +65,6 @@ class FragmentArea5 : Fragment() {
         return root
     }
 
-
     private fun getVideoUri(index: Int) : Uri {
         return if (index < videoUrls.size) {
             Uri.parse(videoUrls[index])

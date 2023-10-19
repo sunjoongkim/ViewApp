@@ -28,6 +28,7 @@ class DetailView(private val binding: HolidayDetailBinding, private val showBott
             binding.textName.setOnClickListener {
                 showBottomSheet(info?.name!!)
             }
+            // holiday info의 url 이 값이 없으면 DEFAULT_URL, 있으면 해당 url의 이미지를 보여줌
             Glide.with(binding.root)
                 .load(if (info.url == null) DEFAULT_URL else info?.url)
                 .into(binding.imageView);
