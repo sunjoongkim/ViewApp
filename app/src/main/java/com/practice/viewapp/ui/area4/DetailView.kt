@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.practice.viewapp.data.Holiday
 import com.practice.viewapp.databinding.HolidayDetailBinding
 
-class DetailView(private val binding: HolidayDetailBinding) {
+class DetailView(private val binding: HolidayDetailBinding, private val showBottomSheet: (String) -> Unit) {
 
     private val DEFAULT_URL = "https://cdn.pixabay.com/photo/2021/08/03/07/03/orange-6518675_960_720.jpg"
 
@@ -24,7 +24,10 @@ class DetailView(private val binding: HolidayDetailBinding) {
             binding.textDate.text = info?.date
             binding.textLocalName.text = info?.localName
             binding.textName.text = info?.name
-
+            // name 클릭시 하단 팝업 생성
+            binding.textName.setOnClickListener {
+                showBottomSheet(info?.name!!)
+            }
             Glide.with(binding.root)
                 .load(if (info.url == null) DEFAULT_URL else info?.url)
                 .into(binding.imageView);

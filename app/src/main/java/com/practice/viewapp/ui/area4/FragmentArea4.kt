@@ -60,7 +60,7 @@ class FragmentArea4 : Fragment() {
         val root: View = binding.root
 
         // detail view 선언
-        detailView = DetailView(binding.detailView)
+        detailView = DetailView(binding.detailView, this::showBottomSheet)
 
         // 확인 버튼 누르면 사용자가 입력한 year, locale 를 사용해 api 호출
         binding.okButton.setOnClickListener {
@@ -80,7 +80,7 @@ class FragmentArea4 : Fragment() {
                             Log.d("OK", it.toString())
 
                             // 성공적으로 api 호출이 완료되면 holiday list를 RecyclerView 에 넣어서 보여준다.
-                            binding.horizontalRecyclerView.adapter = MyAdapter(holidayList, this@FragmentArea4::showDetailView, this@FragmentArea4::showBottomSheet)
+                            binding.horizontalRecyclerView.adapter = MyAdapter(holidayList, this@FragmentArea4::showDetailView)
 
                         } ?: run {
                             Log.d("NG", "body is null")
@@ -123,7 +123,7 @@ class FragmentArea4 : Fragment() {
 
 
     // 리스트 Adapter
-    private class MyAdapter(private val dataList: List<Holiday>, private val showDetailView: (Holiday) -> Unit, private val showBottomSheet: (String) -> Unit) :
+    private class MyAdapter(private val dataList: List<Holiday>, private val showDetailView: (Holiday) -> Unit) :
         RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -148,10 +148,6 @@ class FragmentArea4 : Fragment() {
             }
 
             holder.textViewName.text = data.name
-            // name 클릭시 하단 팝업 생성
-            holder.textViewName.setOnClickListener {
-                showBottomSheet(data.name)
-            }
         }
 
         override fun getItemCount() = dataList.size
